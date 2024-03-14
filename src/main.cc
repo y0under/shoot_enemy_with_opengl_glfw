@@ -26,10 +26,18 @@ class game {
     window = glfwCreateWindow(kwidth, kheight, "GLFW test", nullptr, nullptr);
   }
 
+  /*
+   * update elements for display
+   */
+  void update_status() {
+  }
+
   void main_loop()
   {
     while (!glfwWindowShouldClose(window)) {
+      if (glfwGetKey(window, GLFW_KEY_ESCAPE)) break;
       glfwPollEvents();
+      update_status();
     }
   }
   // value
