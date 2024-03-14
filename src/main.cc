@@ -2,34 +2,49 @@
 #include <stdexcept>
 #include <GLFW/glfw3.h>
 
-const int kheight = 400;
-const int kwidth = 600;
-GLFWwindow *window;
+class game {
+  public:
+    // value
+  const int kheight = 400;
+  const int kwidth = 600;
 
-void init_window() {
-  if (!glfwInit()) {
-    throw std::runtime_error("GLFW is not initialized.");
+  void start() {
+    init_window();
+    main_loop();
   }
 
-  glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+  private:
+  // function
+  void init_window() {
+    if (!glfwInit()) {
+      throw std::runtime_error("GLFW is not initialized.");
+    }
 
-  window = glfwCreateWindow(kwidth, kheight, "GLFW test", nullptr, nullptr);
-}
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-void main_loop()
-{
-  while (!glfwWindowShouldClose(window)) {
-    glfwPollEvents();
+    window = glfwCreateWindow(kwidth, kheight, "GLFW test", nullptr, nullptr);
   }
-}
+
+  void main_loop()
+  {
+    while (!glfwWindowShouldClose(window)) {
+      glfwPollEvents();
+    }
+  }
+  // value
+  GLFWwindow *window;
+};
 
 int main() {
   try{
-  init_window();
-  main_loop();
+    game game;
+    game.start();
   }
   catch (std::exception(e)) {
     std::cerr << "Exception: " << e.what() << std::endl;
+    return -1;
   }
+
+  return 0;
 }
