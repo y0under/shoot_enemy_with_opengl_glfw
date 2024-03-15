@@ -3,6 +3,23 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+struct vec2 {
+  public:
+    float position_x;
+    float position_y;
+};
+
+class player {
+  public:
+    const float *get_position_x() { return &position_.position_x; }
+    const float *get_position_y() { return &position_.position_y; }
+    void set_position_x(const float &x) { position_.position_x = x; }
+    void set_position_y(const float &y) { position_.position_y = y; }
+
+  private:
+    vec2 position_;
+};
+
 class game {
   public:
     // value
@@ -61,8 +78,11 @@ class game {
      */
     void update_status() {
       glClear(GL_COLOR_BUFFER_BIT);
-      draw_player();
       glfwSwapBuffers(window_);
+    }
+
+    void generate_output() {
+      draw_player();
     }
 
     void main_loop()
@@ -70,7 +90,9 @@ class game {
       while (!glfwWindowShouldClose(window_)) {
         if (glfwGetKey(window_, GLFW_KEY_ESCAPE)) break;
         glfwPollEvents();
+        // process_input();
         update_status();
+        generate_output();
       }
     }
     // value
