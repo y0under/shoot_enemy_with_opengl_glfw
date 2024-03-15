@@ -1,5 +1,6 @@
 CFLAGS = -std=c++20 -O2
-LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
+# LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
+LDFLAGS = -lglew -lglfw -framework OpenGL
 
 glfw_test: src/main.cc
 	g++ $(CFLAGS) -o bin/glfw_test src/main.cc $(LDFLAGS) -D NDEBUG
