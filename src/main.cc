@@ -164,10 +164,10 @@ class game {
     const float kwidth = 600;
 
     game() {
-      player_verteces_[0] = { -0.5f, -0.5f };
-      player_verteces_[1] = { 0.5f, -0.5f };
-      player_verteces_[2] = { 0.5f, 0.5f };
-      player_verteces_[3] = { -0.5f, 0.5f };
+      player_verteces_[0] = { -0.05f, -0.95f };
+      player_verteces_[1] = { 0.05f, -0.95f };
+      player_verteces_[2] = { 0.05f, -0.9f };
+      player_verteces_[3] = { -0.05f, -0.9f };
     } // player_(new player(kwidth, kheight)){}
 
 void start() {
