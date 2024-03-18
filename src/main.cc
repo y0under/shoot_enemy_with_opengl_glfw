@@ -6,6 +6,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+struct vector2 {
+  float x;
+  float y;
+};
+
 /*
  * out put result of compiling shader
  */
@@ -135,10 +140,16 @@ class object {
  */
 class player {
   public:
-    player(GLint dimension, GLsizei vertex_count, const object::vertex *vertex)
+    player(GLint dimension,
+           GLsizei vertex_count,
+           const object::vertex *vertex,
+           const float kheight,
+           const float kwidth)
       : object_(new object(dimension, vertex_count, vertex))
         , vertex_count_(vertex_count)
   {
+    position_.x = kwidth / 2.0f;;
+    position_.y = kheight * 0.9f;
   }
 
     void draw() const
@@ -156,6 +167,7 @@ class player {
 
   private:
     std::shared_ptr<const object> object_;
+    vector2 position_;
 };
 
 class game {
@@ -172,7 +184,7 @@ class game {
 
 void start() {
   init_window();
-  player_ = std::move(std::make_unique<player>(2, 4, player_verteces_));
+  player_ = std::move(std::make_unique<player>(2, 4, player_verteces_, kheight, kwidth));
   program_id_ = crateShader();
   char c[256];
   printShaderInfoLog(program_id_, c);
@@ -225,6 +237,14 @@ void draw_player() {
  * update elements for display
  */
 void update_status() {
+  update_player_vertex();
+}
+
+/*
+ * for move player
+ */
+void update_player_vertex() {
+
 }
 
 void generate_output() {
