@@ -141,10 +141,10 @@ class object {
 class player {
   public:
     player(GLint dimension,
-           GLsizei vertex_count,
-           const object::vertex *vertex,
-           const float kheight,
-           const float kwidth)
+        GLsizei vertex_count,
+        const object::vertex *vertex,
+        const float kheight,
+        const float kwidth)
       : object_(new object(dimension, vertex_count, vertex))
         , vertex_count_(vertex_count)
   {
@@ -166,7 +166,7 @@ class player {
     const GLsizei vertex_count_;
     vector2 position_;
 
-  private:
+    // private:
     std::shared_ptr<const object> object_;
 };
 
@@ -176,9 +176,9 @@ class game {
     const float kwidth_ = 600;
     const uint32_t kexpected_min_elapsed_time_per_flame_ = 16;
     const float kmax_delta_time_ = 0.5f;
-    const float kplayer_speed_ = 0.01f;
-    const float kplayer_height_ = kheight_ * 0.05f;
-    const float kplayer_width_ = kwidth_ * 0.05f;
+    const float kplayer_speed_ = 0.02f;
+    const float kplayer_height_ = 0.05f;
+    const float kplayer_width_ = 2.0f / 20.0f;
 
     game() {
       player_verteces_[0] = { -0.05f, -0.95f };
@@ -271,24 +271,21 @@ void update_player_vertex() {
   delta_time = std::max(delta_time, kmax_delta_time_);
 
   player_->position_.x += player_direction_ * (kplayer_speed_ * delta_time);
-  std::cout << "before p pos: " << player_->position_.x << std::endl;
   // protect from over flow x position
-  player_->position_.x = std::max(-1.0f, player_->position_.x);
-  player_->position_.x = std::min(player_->position_.x, 1.0f);
-  std::cout << "after p pos: " << player_->position_.x << std::endl;
-
   const float khalf_player_width = kplayer_width_ / 2.0f;
+  player_->position_.x = std::max(-1.0f + khalf_player_width, player_->position_.x);
+  player_->position_.x = std::min(player_->position_.x, 1.0f - khalf_player_width);
+
   player_verteces_[0].position[0] = player_->position_.x - khalf_player_width;
   player_verteces_[1].position[0] = player_->position_.x + khalf_player_width;
   player_verteces_[2].position[0] = player_->position_.x + khalf_player_width;
   player_verteces_[3].position[0] = player_->position_.x - khalf_player_width;
-
-  std::cout << player_->position_.x << ' ' << player_->position_.y << std::endl;
-  std::cout << player_verteces_[0].position[0] << std::endl;
 }
 
 void generate_output() {
   glUseProgram(program_id_);
+  player_->object_->bind();  // bind player's vertex buffer'
+  glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(object::vertex), player_verteces_, GL_DYNAMIC_DRAW);  // update buffer
   draw_player();
 }
 
@@ -310,7 +307,6 @@ void main_loop()
 }
 // value
 GLFWwindow *window_;
-// std::unique_ptr<player> player_;
 GLuint program_id_;
 std::unique_ptr<player> player_;
 object::vertex player_verteces_[4];
