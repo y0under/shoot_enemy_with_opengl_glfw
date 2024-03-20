@@ -148,8 +148,8 @@ class player {
       : object_(new object(dimension, vertex_count, vertex))
         , vertex_count_(vertex_count)
   {
-    position_.x = kwidth / 2.0f;;
-    position_.y = kheight * 0.9f;
+    position_.x = 0;
+    position_.y = -2.0f / kheight * 0.9f;
   }
 
     void draw() const
@@ -164,27 +164,35 @@ class player {
     }
 
     const GLsizei vertex_count_;
+    vector2 position_;
 
   private:
     std::shared_ptr<const object> object_;
-    vector2 position_;
 };
 
 class game {
   public:
-    const float kheight = 400;
-    const float kwidth = 600;
+    const float kheight_ = 400;
+    const float kwidth_ = 600;
+    const uint32_t kexpected_min_elapsed_time_per_flame_ = 16;
+    const float kmax_delta_time_ = 0.5f;
+    const float kplayer_speed_ = 0.01f;
+    const float kplayer_height_ = kheight_ * 0.05f;
+    const float kplayer_width_ = kwidth_ * 0.05f;
 
     game() {
       player_verteces_[0] = { -0.05f, -0.95f };
       player_verteces_[1] = { 0.05f, -0.95f };
       player_verteces_[2] = { 0.05f, -0.9f };
       player_verteces_[3] = { -0.05f, -0.9f };
+
+      player_direction_ = 0;
+      ticks_count_ = 0;
     } // player_(new player(kwidth, kheight)){}
 
 void start() {
   init_window();
-  player_ = std::move(std::make_unique<player>(2, 4, player_verteces_, kheight, kwidth));
+  player_ = std::move(std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_));
   program_id_ = crateShader();
   char c[256];
   printShaderInfoLog(program_id_, c);
@@ -208,7 +216,7 @@ void init_window() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWwindow *window(glfwCreateWindow(kwidth, kheight, "GLFW test", nullptr, nullptr));
+  GLFWwindow *window(glfwCreateWindow(kwidth_, kheight_, "GLFW test", nullptr, nullptr));
   window_ = std::move(window);
   if (!window_) {
     throw std::runtime_error("Failed to create GLFW window.");
@@ -233,10 +241,23 @@ void draw_player() {
   glDrawArrays(GL_LINE_LOOP, 0, player_->vertex_count_);
 }
 
+void process_input() {
+  player_direction_ = 0;
+  if (glfwGetKey(window_, GLFW_KEY_A)) {
+    --player_direction_;
+  }
+  if (glfwGetKey(window_, GLFW_KEY_D)) {
+    ++player_direction_;
+  }
+}
+
 /*
  * update elements for display
  */
 void update_status() {
+  // wait until deltatime over minimum.
+  while (!(glfwGetTime() - ticks_count_ < kexpected_min_elapsed_time_per_flame_));
+
   update_player_vertex();
 }
 
@@ -244,7 +265,26 @@ void update_status() {
  * for move player
  */
 void update_player_vertex() {
+  float delta_time = (glfwGetTime() - ticks_count_) / 1000.0f;
+  ticks_count_ = glfwGetTime();
+  // limitation for max delta time
+  delta_time = std::max(delta_time, kmax_delta_time_);
 
+  player_->position_.x += player_direction_ * (kplayer_speed_ * delta_time);
+  std::cout << "before p pos: " << player_->position_.x << std::endl;
+  // protect from over flow x position
+  player_->position_.x = std::max(-1.0f, player_->position_.x);
+  player_->position_.x = std::min(player_->position_.x, 1.0f);
+  std::cout << "after p pos: " << player_->position_.x << std::endl;
+
+  const float khalf_player_width = kplayer_width_ / 2.0f;
+  player_verteces_[0].position[0] = player_->position_.x - khalf_player_width;
+  player_verteces_[1].position[0] = player_->position_.x + khalf_player_width;
+  player_verteces_[2].position[0] = player_->position_.x + khalf_player_width;
+  player_verteces_[3].position[0] = player_->position_.x - khalf_player_width;
+
+  std::cout << player_->position_.x << ' ' << player_->position_.y << std::endl;
+  std::cout << player_verteces_[0].position[0] << std::endl;
 }
 
 void generate_output() {
@@ -261,7 +301,7 @@ void main_loop()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0);
 
-    // process_input();
+    process_input();
     update_status();
     generate_output();
     glfwSwapBuffers(window_);
@@ -274,6 +314,8 @@ GLFWwindow *window_;
 GLuint program_id_;
 std::unique_ptr<player> player_;
 object::vertex player_verteces_[4];
+int32_t player_direction_;
+uint32_t ticks_count_;
 };
 
 int main() {
