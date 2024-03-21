@@ -4,6 +4,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+/*
+ * for display target object
+ */
 class object {
   public:
     struct vertex

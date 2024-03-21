@@ -3,14 +3,17 @@ CFLAGS = -std=c++20 -O2
 LDFLAGS = -lglew -lglfw -framework OpenGL
 OUT_DIR = bin
 
-glfw_test: src/main.cc bin/object bin/player
+glfw_test: src/main.cc bin/object bin/player bin/game
 	g++ $(CFLAGS) -o bin/glfw_test $^ $(LDFLAGS) -D NDEBUG
+
+bin/game: src/game.cc src/game.h bin/object bin/player
+	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 debug: src/main.cc
 	g++ $(CFLAGS) -o bin/glfw_test src/main.cc $(LDFLAGS) -g
 
 bin/object: src/object.cc src/object.h
-	g++ $(CFLAGS) -c -o $@ src/object.cc $(LDFLAGS) -g
+	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 bin/player: src/player.cc src/player.h bin/object
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
