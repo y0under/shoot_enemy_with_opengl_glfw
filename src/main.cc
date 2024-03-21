@@ -6,6 +6,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "object.h"
+
 struct vector2 {
   float x;
   float y;
@@ -94,46 +96,7 @@ void main()
   }
 
 
-class object {
-  public:
-    struct vertex
-    {
-      GLfloat position[2];
-    };
-
-    object(GLint dimension, GLsizei vertexcount, const vertex *vertex)
-    {
-      glGenVertexArrays(1, &vao_);
-      glBindVertexArray(vao_);
-      glGenBuffers(1, &vbo_);
-      glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-      glBufferData(GL_ARRAY_BUFFER,
-          vertexcount * sizeof (vertex), vertex, GL_STATIC_DRAW);
-      glVertexAttribPointer(0, dimension, GL_FLOAT, GL_FALSE, 0, 0);
-      glEnableVertexAttribArray(0);
-    }
-
-    virtual ~object()
-    {
-      glDeleteVertexArrays(1, &vao_);
-      glDeleteBuffers(1, &vbo_);
-    }
-
-    void bind() const
-    {
-      glBindVertexArray(vao_);
-    }
-
-  private:
-    // forbidden copy by copy constructor
-    object(const object &o);
-    // forbidden update by operator =
-    object &operator=(const object &o);
-    // vertex array object
-    GLuint vao_;
-    // vertex array object name
-    GLuint vbo_;
-};
+;
 
 /*
  * player object
