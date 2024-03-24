@@ -13,6 +13,7 @@ game::game() {
 void game::start() {
   init_window();
   player_ = std::move(std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_));
+  enemy_ = std::move(std::make_unique<enemy>(2, 100, 1.0f, kheight_, kwidth_));
   program_id_ = create_shader();
   char c[256];
   print_shader_info_log(program_id_, c);
@@ -146,6 +147,10 @@ void game::draw_player() {
   glDrawArrays(GL_LINE_LOOP, 0, player_->vertex_count_);
 }
 
+void game::draw_enemy() {
+  enemy_->draw();
+}
+
 void game::process_input() {
   player_direction_ = 0;
   if (glfwGetKey(window_, GLFW_KEY_A)) {
@@ -192,6 +197,7 @@ void game::generate_output() {
   player_->object_->bind();  // bind player's vertex buffer'
   glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(object::vertex), player_verteces_, GL_DYNAMIC_DRAW);  // update buffer
   draw_player();
+  draw_enemy();
 }
 
 void game::main_loop()

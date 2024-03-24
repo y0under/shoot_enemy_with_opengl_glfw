@@ -1,9 +1,8 @@
 #include <iostream>
 
 #include "game.h"
-#include "object.h"
-#include "player.h"
 
+#include "object.h"
 
 int main() {
   try{

@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 
 /*
- * for display target object
+ * for display target object 
  */
 class object {
   public:
