@@ -1,8 +1,9 @@
 #include "circle.h"
 
-circle::circle(float x, float y) {
+circle::circle(float x, float y, float radius) {
   center_x_ = x;
   center_y_ = y;
+  radius_ = radius;
   update_vertices();
 }
 
