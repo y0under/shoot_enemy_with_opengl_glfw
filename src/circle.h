@@ -1,6 +1,7 @@
 #ifndef GLFW_PRAC_SRC_CIRCLE_H
 #define GLFW_PRAC_SRC_CIRCLE_H
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
 
@@ -15,7 +16,7 @@ class circle {
     void set_center(float x, float y);
     void draw();
 
-    static const int ksegments = 100; // 円を描画するためのセグメントの数
+    static const int ksegments = 100;
 
   private:
 
@@ -24,6 +25,7 @@ class circle {
     float center_x_, center_y_;
     float radius_;
     float vertices_[2 * (ksegments + 2)];
+    GLuint vao_;
     GLuint vbo_;
 };
 

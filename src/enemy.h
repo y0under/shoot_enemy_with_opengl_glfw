@@ -3,22 +3,18 @@
 
 #include <GL/glew.h>
 #include <memory>
+#include "circle.h"
 #include "vector2.h"
 
 class enemy {
   public:
-    enemy(GLint dimension,
-        GLsizei vertex_count,
-        const float radius,
-        const float kheight,
-        const float kwidth);
+    enemy(const float &kheight, const float &kwidth);
     void draw() const;
-    virtual void execute() const;
 
+  private:
     vector2 position_;
-
-    const GLsizei segments_count_;
-    const GLsizei radius_;
+    float radius_;
+    std::unique_ptr<circle> circle_object_;
 };
 
 #endif

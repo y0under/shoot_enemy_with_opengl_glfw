@@ -27,6 +27,7 @@ class object {
     GLuint vao_;
     // vertex array object name
     GLuint vbo_;
+    GLint dimension_;
 };
 
 

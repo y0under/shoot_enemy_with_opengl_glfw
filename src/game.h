@@ -27,7 +27,6 @@ class game {
     const float kplayer_speed_ = 0.02f;
     const float kplayer_height_ = 0.05f;
     const float kplayer_width_ = 2.0f / 20.0f;
-    const float kenemy_radius = 1.0f;
 
   private:
     void init_window();
@@ -46,7 +45,6 @@ class game {
     std::unique_ptr<player> player_;
     std::unique_ptr<enemy> enemy_;
     object::vertex player_verteces_[4];
-    // std::unique_ptr<enemy> enemy_;
     int32_t player_direction_;
     uint32_t ticks_count_;
 
