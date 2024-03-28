@@ -146,6 +146,8 @@ void game::draw_player() {
   player_->object_->bind();  // bind player's vertex buffer'
   glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(object::vertex), player_verteces_, GL_DYNAMIC_DRAW);  // update buffer
   glDrawArrays(GL_LINE_LOOP, 0, player_->vertex_count_);
+  glDisableVertexAttribArray(0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void game::draw_enemy() {

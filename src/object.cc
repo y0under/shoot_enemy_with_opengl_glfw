@@ -8,7 +8,7 @@ object::object(GLint dimension, GLsizei vertexcount, const vertex *vertex)
   glGenBuffers(1, &vbo_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glBufferData(GL_ARRAY_BUFFER,
-               vertexcount * sizeof (vertex), vertex, GL_STATIC_DRAW);
+               vertexcount * sizeof (vertex), vertex, GL_DYNAMIC_DRAW);
   glVertexAttribPointer(0, dimension_, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(0);
 }

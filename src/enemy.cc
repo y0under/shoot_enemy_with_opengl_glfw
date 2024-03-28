@@ -3,9 +3,9 @@
 
 enemy::enemy(const float &kheight, const float &kwidth)
 {
-  radius_ = (std::min(kwidth, kheight) * 0.1f);
+  radius_ = (2.0f / std::min(kwidth, kheight) * 50.0f);
   position_.x = 0;
-  position_.y = 2.0f / kheight * 0.9f;
+  position_.y = 0.5f;
   circle_object_ = std::move(std::make_unique<circle>(position_.x, position_.y, radius_));
 }
 
