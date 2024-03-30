@@ -9,6 +9,8 @@
 class enemy {
   public:
     enemy(const float &kheight, const float &kwidth);
+    enemy(const float &kheight, const float &kwidth,
+          const float position_x, const float position_y);
     void draw() const;
 
   private:
