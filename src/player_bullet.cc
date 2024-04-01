@@ -26,3 +26,7 @@ void player_bullet::shoot() {
 void player_bullet::land() {
   is_shoot_ = false;
 }
+
+void player_bullet::set_center(vector2 v) {
+  circle_object_->set_center(v.x, v.y);
+}

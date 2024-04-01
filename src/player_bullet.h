@@ -9,10 +9,12 @@ class player_bullet {
   public:
     player_bullet(const float &position_x, const float &position_y);
     void draw() const;
+    // start to move bullet
     void shoot();
     // finish to move bullet
     void land();
     bool is_shoot();
+    void set_center(vector2 v);
 
   private:
     vector2 position_;
