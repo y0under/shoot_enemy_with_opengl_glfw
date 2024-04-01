@@ -2,6 +2,7 @@
 #define GLFW_PRAC_GAME_H
 
 #include "player.h"
+#include "player_bullet.h"
 #include "enemy.h"
 
 #include <algorithm>
@@ -43,6 +44,7 @@ class game {
     GLFWwindow *window_;
     GLuint program_id_;
     std::unique_ptr<player> player_;
+    std::unique_ptr<player_bullet> player_bullet_;
     std::unique_ptr<enemy> enemy_;
     object::vertex player_verteces_[4];
     int32_t player_direction_;

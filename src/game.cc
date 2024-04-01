@@ -12,8 +12,9 @@ game::game() {
 
 void game::start() {
   init_window();
-  player_ = std::move(std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_));
-  enemy_ = std::move(std::make_unique<enemy>(kheight_, kwidth_));
+  player_ = std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_);
+  player_bullet_ = std::make_unique<player_bullet>(0, 0);
+  enemy_ = std::make_unique<enemy>(kheight_, kwidth_);
   program_id_ = create_shader();
   char c[256];
   print_shader_info_log(program_id_, c);
