@@ -14,6 +14,9 @@ class circle {
     circle(float x, float y, float radius_);
     ~circle();
     void set_center(float x, float y);
+    const float get_center_x() const;
+    const float get_center_y() const;
+    const float get_radius() const;
     void draw();
 
     static const int ksegments = 100;

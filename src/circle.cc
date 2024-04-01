@@ -37,6 +37,18 @@ void circle::set_center(float x, float y) {
   update_vertices();
 }
 
+const float circle::get_center_x() const {
+  return center_x_;
+}
+
+const float circle::get_center_y() const {
+  return center_y_;
+}
+
+const float circle::get_radius() const {
+  return radius_;
+}
+
 void circle::update_vertices() {
   vertices_[0] = center_x_;
   vertices_[1] = center_y_;
