@@ -6,7 +6,7 @@ OUT_DIR = bin
 glfw_test: src/main.cc bin/object bin/player bin/game bin/enemy bin/circle
 	g++ $(CFLAGS) -o bin/glfw_test $^ $(LDFLAGS) -D NDEBUG
 
-bin/game: src/game.cc src/game.h bin/object bin/player
+bin/game: src/game.cc src/game.h bin/object bin/player bin/colliding bin/player_bullet
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 debug: src/main.cc
@@ -22,6 +22,12 @@ bin/enemy: src/enemy.cc src/enemy.h
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 bin/circle: src/circle.cc src/circle.h
+	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
+
+bin/colliding: src/colliding.cc src/colliding.h
+	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
+
+bin/player_bullet: src/player_bullet.cc src/player_bullet.h
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 .PHONY: test clean
