@@ -3,7 +3,7 @@ CFLAGS = -std=c++20 -O2
 LDFLAGS = -lglew -lglfw -framework OpenGL
 OUT_DIR = bin
 
-glfw_test: src/main.cc bin/object bin/player bin/game bin/enemy bin/circle
+glfw_test: src/main.cc bin/object bin/player bin/game bin/enemy bin/circle bin/player_bullet
 	g++ $(CFLAGS) -o bin/glfw_test $^ $(LDFLAGS) -D NDEBUG
 
 bin/game: src/game.cc src/game.h bin/object bin/player bin/colliding bin/player_bullet
