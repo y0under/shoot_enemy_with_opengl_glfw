@@ -13,7 +13,7 @@ game::game() {
 void game::start() {
   init_window();
   player_ = std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_);
-  player_bullet_ = std::make_unique<player_bullet>(0, 0);
+  player_bullet_ = std::make_unique<player_bullet>();
   enemy_ = std::make_unique<enemy>(kheight_, kwidth_);
   program_id_ = create_shader();
   char c[256];
@@ -155,14 +155,42 @@ void game::draw_enemy() {
   enemy_->draw();
 }
 
+void game::draw_player_bullet() {
+  if (!player_bullet_->is_shoot())
+    return;
+
+  player_bullet_->draw();
+}
+
+/*
+ * processing of input keyboard
+ */
 void game::process_input() {
   player_direction_ = 0;
+  // move player to left
   if (glfwGetKey(window_, GLFW_KEY_A)) {
     --player_direction_;
   }
+  // move player to right
   if (glfwGetKey(window_, GLFW_KEY_D)) {
     ++player_direction_;
   }
+
+  // shoot player's bullet
+  if (glfwGetKey(window_, GLFW_KEY_K)) {
+    if (!player_bullet_->is_shoot()) {
+      shoot_player_bullet();
+    }
+  }
+}
+
+void game::shoot_player_bullet() {
+  player_bullet_->shoot();
+  vector2 v;
+  // fixme: dirty code. wanna calc player vertex from center position of player
+  v.x = player_->position_.x;
+  v.y = static_cast<float>(player_verteces_[2].position[1]);
+  player_bullet_->set_center(v);
 }
 
 /*
@@ -172,17 +200,20 @@ void game::update_status() {
   // wait until deltatime over minimum.
   while (!(glfwGetTime() - ticks_count_ < kexpected_min_elapsed_time_per_flame_));
 
-  update_player_vertex();
+  // wait
+  float delta_time = (glfwGetTime() - ticks_count_) / 1000.0f;
+  // limitation for max delta time
+  delta_time = std::max(delta_time, kmax_delta_time_);
+  ticks_count_ = glfwGetTime();
+
+  update_player_vertex(delta_time);
+  update_player_bullet_position(delta_time);
 }
 
 /*
  * for move player
  */
-void game::update_player_vertex() {
-  float delta_time = (glfwGetTime() - ticks_count_) / 1000.0f;
-  ticks_count_ = glfwGetTime();
-  // limitation for max delta time
-  delta_time = std::max(delta_time, kmax_delta_time_);
+void game::update_player_vertex(float delta_time) {
 
   player_->position_.x += player_direction_ * (kplayer_speed_ * delta_time);
   // protect from over flow x position
@@ -196,9 +227,20 @@ void game::update_player_vertex() {
   player_verteces_[3].position[0] = player_->position_.x - khalf_player_width;
 }
 
+/*
+ * move player's bullet
+ */
+void game::update_player_bullet_position(float delta_time) {
+  if (!player_bullet_->is_shoot())
+    return;
+
+}
+
 void game::generate_output() {
   glUseProgram(program_id_);
   draw_player();
+  glUseProgram(program_id_);
+  draw_player_bullet();
   glUseProgram(program_id_);
   draw_enemy();
 }

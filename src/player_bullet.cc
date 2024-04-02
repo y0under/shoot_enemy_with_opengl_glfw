@@ -1,12 +1,10 @@
 #include "player_bullet.h"
 #include <vector>
 
-player_bullet::player_bullet(const float &position_x, const float &position_y)
+player_bullet::player_bullet()
 {
   radius_ = (2.0f / 75.0f);
-  position_.x = position_x;
-  position_.y = position_y;
-  circle_object_ = std::make_unique<circle>(position_.x, position_.y, radius_);
+  circle_object_ = std::make_unique<circle>(0, 0, radius_);
 }
 
 void player_bullet::draw() const
@@ -25,6 +23,13 @@ void player_bullet::shoot() {
 
 void player_bullet::land() {
   is_shoot_ = false;
+}
+
+const vector2 player_bullet::get_center() const {
+  vector2 v;
+  v.x = circle_object_->get_center_x();
+  v.y = circle_object_->get_center_y();
+  return v;
 }
 
 void player_bullet::set_center(vector2 v) {

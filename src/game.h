@@ -32,10 +32,13 @@ class game {
   private:
     void init_window();
     void draw_player();
+    void draw_player_bullet();
     void draw_enemy();
     void process_input();
     void update_status();
-    void update_player_vertex();
+    void update_player_vertex(float delta_time);
+    void update_player_bullet_position(float delta_time);
+    void shoot_player_bullet();
     void generate_output();
     void main_loop();
     GLboolean print_shader_info_log(GLuint shader, const char *str);

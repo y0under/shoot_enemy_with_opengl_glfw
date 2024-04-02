@@ -7,17 +7,18 @@
 
 class player_bullet {
   public:
-    player_bullet(const float &position_x, const float &position_y);
+    player_bullet();
     void draw() const;
     // start to move bullet
     void shoot();
     // finish to move bullet
     void land();
     bool is_shoot();
+    const vector2 get_center() const;
     void set_center(vector2 v);
 
   private:
-    vector2 position_;
+    // vector2 position_;
     float radius_;
     bool is_shoot_;
     std::unique_ptr<circle> circle_object_;
