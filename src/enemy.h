@@ -12,11 +12,16 @@ class enemy {
     enemy(const float &kheight, const float &kwidth,
           const float position_x, const float position_y);
     void draw() const;
+    const float get_radius() const;
+    const vector2 get_center() const;
+    bool is_alive();
+    void kill();
 
   private:
     vector2 position_;
     float radius_;
     std::unique_ptr<circle> circle_object_;
+    bool is_alive_;
 };
 
 #endif

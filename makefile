@@ -24,7 +24,7 @@ bin/enemy: src/enemy.cc src/enemy.h
 bin/circle: src/circle.cc src/circle.h
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
-bin/colliding: src/colliding.cc src/colliding.h
+bin/colliding: src/colliding.h
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 bin/player_bullet: src/player_bullet.cc src/player_bullet.h

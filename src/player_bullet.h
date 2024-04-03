@@ -15,6 +15,7 @@ class player_bullet {
     void land();
     bool is_shoot();
     const vector2 get_center() const;
+    const float get_radius() const;
     void set_center(vector2 v);
 
   private:

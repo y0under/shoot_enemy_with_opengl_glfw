@@ -208,6 +208,14 @@ void game::update_status() {
 
   update_player_vertex(delta_time);
   update_player_bullet_position(delta_time);
+
+  vector2 enemy_center = enemy_->get_center();
+  vector2 player_bullet_center = player_bullet_->get_center();
+  if (colliding::is_colliding(enemy_->get_radius(), enemy_->get_center(),
+                         player_bullet_->get_radius(), player_bullet_->get_center())) {
+    enemy_->kill();
+    player_bullet_->land();
+  }
 }
 
 /*

@@ -25,6 +25,10 @@ void player_bullet::land() {
   is_shoot_ = false;
 }
 
+const float player_bullet::get_radius() const {
+  return radius_;
+}
+
 const vector2 player_bullet::get_center() const {
   vector2 v;
   v.x = circle_object_->get_center_x();

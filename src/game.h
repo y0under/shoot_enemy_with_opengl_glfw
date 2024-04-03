@@ -1,6 +1,7 @@
 #ifndef GLFW_PRAC_GAME_H
 #define GLFW_PRAC_GAME_H
 
+#include "colliding.h"
 #include "player.h"
 #include "player_bullet.h"
 #include "enemy.h"
