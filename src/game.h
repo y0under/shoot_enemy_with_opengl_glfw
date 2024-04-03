@@ -26,6 +26,7 @@ class game {
     const uint32_t kexpected_min_elapsed_time_per_flame_ = 16;
     const float kmax_delta_time_ = 0.5f;
     const float kplayer_speed_ = 0.02f;
+    const float kplayer_bullet_speed_ = 0.08f;
     const float kplayer_height_ = 0.05f;
     const float kplayer_width_ = 2.0f / 20.0f;
 

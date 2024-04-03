@@ -233,7 +233,14 @@ void game::update_player_vertex(float delta_time) {
 void game::update_player_bullet_position(float delta_time) {
   if (!player_bullet_->is_shoot())
     return;
-
+  vector2 v = player_bullet_->get_center();
+  v.y += kplayer_bullet_speed_ * delta_time;
+  // out of display area
+  if (v.y > 1.0f) {
+    player_bullet_->land();
+    return;
+  }
+  player_bullet_->set_center(v);
 }
 
 void game::generate_output() {
