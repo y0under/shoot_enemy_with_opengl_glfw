@@ -11,7 +11,10 @@
 
 class circle {
   public:
-    circle(float x, float y, float radius_);
+    circle(const float &x, const float &y, const float &radius);
+    // for normarized device coordinate
+    circle(const float &x, const float &y, const float &radius,
+           const uint32_t &width, const uint32_t &height);
     ~circle();
     void set_center(float x, float y);
     const float get_center_x() const;
@@ -22,6 +25,12 @@ class circle {
     static const int ksegments = 100;
 
   private:
+    // for to indicate window shape
+    enum {
+      NORMAL,
+      FAT,
+      SLIM,
+    };
 
     void update_vertices();
 
@@ -30,6 +39,9 @@ class circle {
     float vertices_[2 * (ksegments + 2)];
     GLuint vao_;
     GLuint vbo_;
+    uint32_t window_shape_;
+    float window_vertical_ratio_;
+    float window_side_ratio_;
 };
 
 #endif

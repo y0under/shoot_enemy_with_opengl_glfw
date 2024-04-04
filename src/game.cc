@@ -13,7 +13,7 @@ game::game() {
 void game::start() {
   init_window();
   player_ = std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_);
-  player_bullet_ = std::make_unique<player_bullet>();
+  player_bullet_ = std::make_unique<player_bullet>(kwidth_, kheight_);
   enemy_ = std::make_unique<enemy>(kheight_, kwidth_);
   program_id_ = create_shader();
   char c[256];
@@ -211,7 +211,7 @@ void game::update_status() {
 
   vector2 enemy_center = enemy_->get_center();
   vector2 player_bullet_center = player_bullet_->get_center();
-  if (colliding::is_colliding(enemy_->get_radius(), enemy_->get_center(),
+  if (enemy_->is_alive() && colliding::is_colliding(enemy_->get_radius(), enemy_->get_center(),
                          player_bullet_->get_radius(), player_bullet_->get_center())) {
     enemy_->kill();
     player_bullet_->land();

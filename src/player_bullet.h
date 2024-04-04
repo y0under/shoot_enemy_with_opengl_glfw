@@ -7,7 +7,7 @@
 
 class player_bullet {
   public:
-    player_bullet();
+    player_bullet(const float &kwindow_width, const float &kwindow_height);
     void draw() const;
     // start to move bullet
     void shoot();

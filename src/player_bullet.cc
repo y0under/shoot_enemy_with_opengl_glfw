@@ -1,10 +1,10 @@
 #include "player_bullet.h"
 #include <vector>
 
-player_bullet::player_bullet()
+player_bullet::player_bullet(const float &kwindow_width, const float &kwindow_height)
 {
   radius_ = (2.0f / 75.0f);
-  circle_object_ = std::make_unique<circle>(0, 0, radius_);
+  circle_object_ = std::make_unique<circle>(0, 0, radius_, kwindow_width, kwindow_height);
 }
 
 void player_bullet::draw() const
