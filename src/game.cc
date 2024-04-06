@@ -88,7 +88,7 @@ void main()
 out vec4 fragment;
 void main()
 {
- fragment = vec4(1.0, 1.0, 1.0, 1.0);
+ fragment = vec4(0.8, 0.8, 0.8, 1.0);
 }
     )#";
   const char* fs = fragmentShader.c_str();
@@ -123,7 +123,7 @@ void game::init_window() {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWwindow *window(glfwCreateWindow(kwidth_, kheight_, "GLFW test", nullptr, nullptr));
+  GLFWwindow *window(glfwCreateWindow(kwidth_, kheight_, "shoot enemy", nullptr, nullptr));
   window_ = std::move(window);
   if (!window_) {
     throw std::runtime_error("Failed to create GLFW window.");
@@ -265,7 +265,7 @@ void game::main_loop()
   while (!glfwWindowShouldClose(window_)) {
     if (glfwGetKey(window_, GLFW_KEY_ESCAPE)) break;
     // define background color
-    glClearColor(0.5f, 0.0f, 1.0f, 0.0f);
+    glClearColor(0.2f, 0.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearDepth(1.0);
 
