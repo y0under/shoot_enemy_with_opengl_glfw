@@ -15,10 +15,17 @@ void game::start() {
   player_ = std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_);
   player_bullet_ = std::make_unique<player_bullet>(kwidth_, kheight_);
   enemy_ = std::make_unique<enemy>(kheight_, kwidth_);
-  program_id_ = create_shader();
-  char c[256];
-  print_shader_info_log(program_id_, c);
-  print_program_info_log(program_id_);
+
+  // char c[256];
+  // print_shader_info_log(program_id_, c);
+  // print_program_info_log(program_id_);
+
+    shader_operator_ = std::make_unique<shader_operator>();
+    if (!shader_operator_->load_shader("./shader/vertex_shader.vert",
+                                       "./shader/fragment_shader.frag")) {
+      std::cerr << "loading shader is failed." << std::endl;
+      return;
+    }
   main_loop();
 }
 
@@ -61,52 +68,6 @@ GLboolean game::print_program_info_log(GLuint program)
   }
   return static_cast<GLboolean>(status);
 }
-
-
-
-GLuint game::create_shader()
-{
-  // vertex shader
-  GLuint vShaderId = glCreateShader(GL_VERTEX_SHADER);
-  std::string vertexShader = R"#(
-#version 150 core
-in vec4 position;
-void main()
-{
- gl_Position = position;
-}
-    )#";
-
-  const char* vs = vertexShader.c_str();
-  glShaderSource(vShaderId, 1, &vs, NULL);
-  glCompileShader(vShaderId);
-
-  // fragment shader
-  GLuint fShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-  std::string fragmentShader = R"#(
-#version 150 core
-out vec4 fragment;
-void main()
-{
- fragment = vec4(0.8, 0.8, 0.8, 1.0);
-}
-    )#";
-  const char* fs = fragmentShader.c_str();
-  glShaderSource(fShaderId, 1, &fs, NULL);
-  glCompileShader(fShaderId);
-
-  GLuint programId = glCreateProgram();
-  glAttachShader(programId,vShaderId);
-  glAttachShader(programId,fShaderId);
-
-  glLinkProgram(programId);
-
-  glUseProgram(programId);
-
-  return programId;
-  }
-
-
 
 void game::init_window() {
   if (!glfwInit()) {
@@ -252,11 +213,11 @@ void game::update_player_bullet_position(float delta_time) {
 }
 
 void game::generate_output() {
-  glUseProgram(program_id_);
+  shader_operator_->set_target_shader();
   draw_player();
-  glUseProgram(program_id_);
+  shader_operator_->set_target_shader();
   draw_player_bullet();
-  glUseProgram(program_id_);
+  shader_operator_->set_target_shader();
   draw_enemy();
 }
 

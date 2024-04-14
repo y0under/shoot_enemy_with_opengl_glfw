@@ -3,10 +3,10 @@ CFLAGS = -std=c++20 -O2
 LDFLAGS = -lglew -lglfw -framework OpenGL
 OUT_DIR = bin
 
-glfw_test: src/main.cc bin/object bin/player bin/game bin/enemy bin/circle bin/player_bullet
+glfw_test: src/main.cc bin/object bin/player bin/game bin/enemy bin/circle bin/player_bullet bin/shader_operator
 	g++ $(CFLAGS) -o bin/glfw_test $^ $(LDFLAGS) -D NDEBUG
 
-bin/game: src/game.cc src/game.h bin/object bin/player bin/colliding bin/player_bullet
+bin/game: src/game.cc src/game.h bin/object bin/player bin/colliding bin/player_bullet bin/shader_operator
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 debug: src/main.cc
@@ -28,6 +28,9 @@ bin/colliding: src/colliding.h
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 bin/player_bullet: src/player_bullet.cc src/player_bullet.h
+	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
+
+bin/shader_operator: src/shader_operator/shader_operator.cc src/shader_operator/shader_operator.h
 	g++ $(CFLAGS) -c -o $@ $< $(LDFLAGS) -g
 
 .PHONY: test clean

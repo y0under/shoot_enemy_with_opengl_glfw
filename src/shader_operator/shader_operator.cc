@@ -3,6 +3,12 @@
 #include <fstream>
 #include <sstream>
 
+shader_operator::shader_operator() {
+}
+
+shader_operator::~shader_operator() {
+}
+
 bool shader_operator::is_success_compile(GLuint shader) {
   GLint compile_result;
   glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_result);
@@ -66,7 +72,7 @@ bool shader_operator::load_shader(const std::string &vertex_shader_file_name,
   glAttachShader(shader_program_id_, fragment_shader_id_);
   glLinkProgram(shader_program_id_);
 
-  if (!is_valid_program())
+  if (!is_valid_program(shader_program_id_))
     return false;
   return true;
 }

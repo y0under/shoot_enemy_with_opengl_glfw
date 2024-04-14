@@ -5,6 +5,7 @@
 #include "player.h"
 #include "player_bullet.h"
 #include "enemy.h"
+#include "shader_operator/shader_operator.h"
 
 #include <algorithm>
 #include <iostream>
@@ -48,6 +49,7 @@ class game {
 
     GLFWwindow *window_;
     GLuint program_id_;
+    std::unique_ptr<shader_operator> shader_operator_;
     std::unique_ptr<player> player_;
     std::unique_ptr<player_bullet> player_bullet_;
     std::unique_ptr<enemy> enemy_;
