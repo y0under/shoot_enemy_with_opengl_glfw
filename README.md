@@ -1,4 +1,11 @@
 # shoot enemy
 
-![shoot](picture/start.png "start")"
-![shoot](picture/shoot.png "shoot")"
+## screen shot
+
+### start
+
+![shoot](picture/start.png "start")
+
+### shoot
+
+![shoot](picture/shoot.png "shoot")
