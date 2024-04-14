@@ -3,12 +3,30 @@
 #include <fstream>
 #include <sstream>
 
-bool is_success_compile(GLuint shader) {
+bool shader_operator::is_success_compile(GLuint shader) {
   GLint compile_result;
   glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_result);
   if (compile_result == GL_TRUE)
     return true;
 
+  char buffer[512];
+  std::memset(buffer, 0, 512);
+  glGetShaderInfoLog(shader, 511, nullptr, buffer);
+  // TODO: out put log
+
+  return false;
+}
+
+bool shader_operator::is_valid_program(GLuint shader) {
+  GLint link_result;
+  glGetProgramiv(shader, GL_LINK_STATUS, &link_result);
+  if (link_result == GL_TRUE)
+    return true;
+
+  char buffer[512];
+  std::memset(buffer, 0, 512);
+  glGetProgramInfoLog(shader, 511, nullptr, buffer);
+  // TODO: out put log
   return false;
 }
 
@@ -48,5 +66,17 @@ bool shader_operator::load_shader(const std::string &vertex_shader_file_name,
   glAttachShader(shader_program_id_, fragment_shader_id_);
   glLinkProgram(shader_program_id_);
 
+  if (!is_valid_program())
+    return false;
   return true;
+}
+
+void shader_operator::unload_shader() {
+  glDeleteProgram(shader_program_id_);
+  glDeleteProgram(vertex_shader_id_);
+  glDeleteProgram(fragment_shader_id_);
+}
+
+void shader_operator::set_target_shader() {
+  glUseProgram(shader_program_id_);
 }

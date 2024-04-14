@@ -17,7 +17,8 @@ class shader_operator {
     bool load_shader(const std::string &vertex_shader_file_name,
                      const std::string &fragment_shader_file_name);
 
-    void set_active();
+    void set_target_shader();
+    void unload_shader();
 
   private:
     bool compile_shader(const std::string &file_name,
@@ -25,7 +26,10 @@ class shader_operator {
                         GLuint &out_shader);
     // check the link between vertex shader and fragment shader
     bool is_valid_program();
+    // check compile status
     bool is_success_compile(GLuint shader);
+    // check link status
+    bool is_valid_program(GLuint shader);
 
 
     GLuint vertex_shader_id_;
