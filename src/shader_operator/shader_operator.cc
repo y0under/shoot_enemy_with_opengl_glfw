@@ -1,6 +1,7 @@
 #include "shader_operator.h"
 
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 shader_operator::shader_operator() {
@@ -19,6 +20,7 @@ bool shader_operator::is_success_compile(GLuint shader) {
   std::memset(buffer, 0, 512);
   glGetShaderInfoLog(shader, 511, nullptr, buffer);
   // TODO: out put log
+  std::cerr << buffer << std::endl;
 
   return false;
 }
@@ -33,6 +35,8 @@ bool shader_operator::is_valid_program(GLuint shader) {
   std::memset(buffer, 0, 512);
   glGetProgramInfoLog(shader, 511, nullptr, buffer);
   // TODO: out put log
+  std::cerr << buffer << std::endl;
+
   return false;
 }
 
