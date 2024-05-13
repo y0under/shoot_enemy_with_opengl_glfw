@@ -1,10 +1,16 @@
 #include "game.h"
 
 game::game() {
-  player_verteces_[0] = { -0.05f, -0.95f };
-  player_verteces_[1] = { 0.05f, -0.95f };
-  player_verteces_[2] = { 0.05f, -0.9f };
-  player_verteces_[3] = { -0.05f, -0.9f };
+  GLfloat player_verteces[] = { -0.05f, -0.95f,
+                                0.05f, -0.95f,
+                                0.05f, -0.9f,
+                                -0.05f, -0.9f };
+  for (int i = 0; i < 8; ++i) player_verteces_[i] = player_verteces[i];
+  GLuint player_indices[] = { 0, 1,
+                              1, 2,
+                              2, 3,
+                              3, 0 };
+  for (int i = 0; i < 8; ++i) player_indices_[i] = player_indices[i];
 
   player_direction_ = 0;
   ticks_count_ = 0;
@@ -12,61 +18,18 @@ game::game() {
 
 void game::start() {
   init_window();
-  player_ = std::make_unique<player>(2, 4, player_verteces_, kheight_, kwidth_);
+  player_ = std::make_unique<player>(2, 8, player_verteces_, 8, player_indices_, kwidth_, kheight_);
   player_bullet_ = std::make_unique<player_bullet>(kwidth_, kheight_);
   enemy_ = std::make_unique<enemy>(kheight_, kwidth_);
 
-  // char c[256];
-  // print_shader_info_log(program_id_, c);
-  // print_program_info_log(program_id_);
+  shader_operator_ = std::make_unique<y0_engine::shader_operator>();
+  if (!shader_operator_->load_shader("./shader/vertex_shader.vert",
+        "./shader/fragment_shader.frag")) {
+    std::cerr << "loading shader is failed." << std::endl;
+    return;
+  }
 
-    shader_operator_ = std::make_unique<shader_operator>();
-    if (!shader_operator_->load_shader("./shader/vertex_shader.vert",
-                                       "./shader/fragment_shader.frag")) {
-      std::cerr << "loading shader is failed." << std::endl;
-      return;
-    }
   main_loop();
-}
-
-/*
- * out put result of compiling shader
- */
-GLboolean game::print_shader_info_log(GLuint shader, const char *str)
-{
-  GLint status;
-  glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-  if (status == GL_FALSE) std::cerr << "Compile Error in " << str << std::endl;
-  GLsizei bufSize;
-  glGetShaderiv(shader, GL_INFO_LOG_LENGTH , &bufSize);
-  if (bufSize > 1)
-  {
-    std::vector<GLchar> infoLog(bufSize);
-    GLsizei length;
-    glGetShaderInfoLog(shader, bufSize, &length, &infoLog[0]);
-    std::cerr << &infoLog[0] << std::endl;
-  }
-  return static_cast<GLboolean>(status);
-}
-
-/*
- * out put linking result of program objedt
- */
-GLboolean game::print_program_info_log(GLuint program)
-{
-  GLint status;
-  glGetProgramiv(program, GL_LINK_STATUS, &status);
-  if (status == GL_FALSE) std::cerr << "Link Error." << std::endl;
-  GLsizei bufSize;
-  glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufSize);
-  if (bufSize > 1)
-  {
-    std::vector<GLchar> infoLog(bufSize);
-    GLsizei length;
-    glGetProgramInfoLog(program, bufSize, &length, &infoLog[0]);
-    std::cerr << &infoLog[0] << std::endl;
-  }
-  return static_cast<GLboolean>(status);
 }
 
 void game::init_window() {
@@ -105,11 +68,12 @@ void game::init_window() {
 }
 
 void game::draw_player() {
-  player_->object_->bind();  // bind player's vertex buffer'
-  glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(object::vertex), player_verteces_, GL_DYNAMIC_DRAW);  // update buffer
-  glDrawArrays(GL_LINE_LOOP, 0, player_->vertex_count_);
-  glDisableVertexAttribArray(0);
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  player_->draw(player_verteces_);
+  // player_->vertex_array_->bind();  // bind player's vertex buffer'
+  // glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(GLfloat), player_verteces_, GL_DYNAMIC_DRAW);  // update buffer
+  // glDrawArrays(GL_LINES, 0, player_->vertex_count_);
+  // glDisableVertexAttribArray(0);
+  // glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void game::draw_enemy() {
@@ -150,7 +114,7 @@ void game::shoot_player_bullet() {
   vector2 v;
   // fixme: dirty code. wanna calc player vertex from center position of player
   v.x = player_->position_.x;
-  v.y = static_cast<float>(player_verteces_[2].position[1]);
+  v.y = static_cast<float>(player_verteces_[7]);
   player_bullet_->set_center(v);
 }
 
@@ -190,10 +154,11 @@ void game::update_player_vertex(float delta_time) {
   player_->position_.x = std::max(-1.0f + khalf_player_width, player_->position_.x);
   player_->position_.x = std::min(player_->position_.x, 1.0f - khalf_player_width);
 
-  player_verteces_[0].position[0] = player_->position_.x - khalf_player_width;
-  player_verteces_[1].position[0] = player_->position_.x + khalf_player_width;
-  player_verteces_[2].position[0] = player_->position_.x + khalf_player_width;
-  player_verteces_[3].position[0] = player_->position_.x - khalf_player_width;
+  player_verteces_[0] = player_->position_.x - khalf_player_width;
+  player_verteces_[2] = player_->position_.x + khalf_player_width;
+  player_verteces_[4] = player_->position_.x + khalf_player_width;
+  player_verteces_[6] = player_->position_.x - khalf_player_width;
+
 }
 
 /*

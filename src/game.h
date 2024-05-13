@@ -5,7 +5,8 @@
 #include "player.h"
 #include "player_bullet.h"
 #include "enemy.h"
-#include "shader_operator/shader_operator.h"
+// #include "shader_operator/shader_operator.h"
+#include "y0_engine/shader/shader_operator.h"
 
 #include <algorithm>
 #include <iostream>
@@ -44,16 +45,15 @@ class game {
     void shoot_player_bullet();
     void generate_output();
     void main_loop();
-    GLboolean print_shader_info_log(GLuint shader, const char *str);
-    GLboolean print_program_info_log(GLuint program);
 
     GLFWwindow *window_;
     GLuint program_id_;
-    std::unique_ptr<shader_operator> shader_operator_;
+    std::unique_ptr<y0_engine::shader_operator> shader_operator_;
     std::unique_ptr<player> player_;
     std::unique_ptr<player_bullet> player_bullet_;
     std::unique_ptr<enemy> enemy_;
-    object::vertex player_verteces_[4];
+    GLfloat player_verteces_[8];
+    GLuint player_indices_[8];
     int32_t player_direction_;
     uint32_t ticks_count_;
 

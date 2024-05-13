@@ -24,7 +24,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(y0_engine)
 
+# add_subdirectory(${y0_engine_SOURCE_DIR})
+
 add_subdirectory(src)
+# add_subdirectory(${y0_engine_SOURCE_DIR} ${y0_engine_BINARY_DIR})
 
 add_custom_target(run
   COMMAND ${BIN_NAME}

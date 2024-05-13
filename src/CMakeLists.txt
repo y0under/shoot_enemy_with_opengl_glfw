@@ -68,5 +68,6 @@ target_link_libraries(shoot_enemy
                       enemy
                       object
                       player
-                      player_bullet)
+                      player_bullet
+                      y0_engine)
 
