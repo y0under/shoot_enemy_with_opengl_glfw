@@ -1,6 +1,6 @@
-add_library(shader_operator
-  STATIC
-    shader_operator/shader_operator.cc)
+# add_library(shader_operator
+#   STATIC
+#     shader_operator/shader_operator.cc)
 
 add_library(circle
   STATIC
@@ -26,8 +26,8 @@ add_library(game
   STATIC
     game.cc)
 
-target_include_directories(shader_operator
-  PUBLIC ${PROJECT_SOURCE_DIR}/src)
+# target_include_directories(shader_operator
+#   PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 target_include_directories(enemy
   PUBLIC ${PROJECT_SOURCE_DIR}/src)
