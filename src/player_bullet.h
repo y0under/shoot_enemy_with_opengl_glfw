@@ -2,8 +2,10 @@
 #define GLFW_PRAC_SRC_PLAYER_BULLET_H
 #include <GL/glew.h>
 #include <memory>
+
 #include "circle.h"
 #include "vector2.h"
+#include "y0_engine/object/VertexArray.h"
 
 class player_bullet {
   public:

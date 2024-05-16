@@ -4,7 +4,7 @@
 #include <memory>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "object.h"
+
 #include "vector2.h"
 #include "y0_engine/object/VertexArray.h"
 

@@ -10,10 +10,6 @@ add_library(enemy
   STATIC
     enemy.cc)
 
-add_library(object
-  STATIC
-    object.cc)
-
 add_library(player
   STATIC
     player.cc)
@@ -30,9 +26,6 @@ add_library(game
 #   PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 target_include_directories(enemy
-  PUBLIC ${PROJECT_SOURCE_DIR}/src)
-
-target_include_directories(object
   PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 target_include_directories(player
