@@ -5,8 +5,8 @@
 #include "player.h"
 #include "player_bullet.h"
 #include "enemy.h"
-// #include "shader_operator/shader_operator.h"
 #include "y0_engine/shader/shader_operator.h"
+#include "y0_engine/window/WindowGlfw.h"
 
 #include <algorithm>
 #include <iostream>
@@ -20,7 +20,7 @@
  */
 class game {
   public:
-    game();
+    explicit game();
     void start();
     GLuint create_shader();
 
@@ -46,7 +46,7 @@ class game {
     void generate_output();
     void main_loop();
 
-    GLFWwindow *window_;
+    std::unique_ptr<WindowGlfw> window_;
     GLuint program_id_;
     std::unique_ptr<y0_engine::shader_operator> shader_operator_;
     std::unique_ptr<player> player_;

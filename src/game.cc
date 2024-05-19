@@ -1,6 +1,7 @@
 #include "game.h"
 
-game::game() {
+game::game()
+  : window_(new WindowGlfw(kwidth_, kheight_, "Shoot Enemy")) {
   GLfloat player_verteces[] = { -0.05f, -0.95f,
                                 0.05f, -0.95f,
                                 0.05f, -0.9f,
@@ -17,7 +18,6 @@ game::game() {
 } // player_(new player(kwidth, kheight)){}
 
 void game::start() {
-  init_window();
   player_ = std::make_unique<player>(2, 8, player_verteces_, 8, player_indices_, kwidth_, kheight_);
   player_bullet_ = std::make_unique<player_bullet>(kwidth_, kheight_);
   enemy_ = std::make_unique<enemy>(kheight_, kwidth_);
@@ -32,48 +32,8 @@ void game::start() {
   main_loop();
 }
 
-void game::init_window() {
-  if (!glfwInit()) {
-    throw std::runtime_error("GLFW is not initialized.");
-  }
-
-  // rgist process of ending
-  atexit(glfwTerminate);
-
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  // glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-  GLFWwindow *window(glfwCreateWindow(kwidth_, kheight_, "shoot enemy", nullptr, nullptr));
-  window_ = std::move(window);
-  if (!window_) {
-    throw std::runtime_error("Failed to create GLFW window.");
-  }
-
-  // let active window
-  glfwMakeContextCurrent(window_);
-
-  // init glew
-  glewExperimental = GL_TRUE;
-
-  if (glewInit() != GLEW_OK)
-  {
-    glfwDestroyWindow(window_);
-    throw std::runtime_error("Can't initialize GLEW");
-  }
-
-}
-
 void game::draw_player() {
   player_->draw(player_verteces_);
-  // player_->vertex_array_->bind();  // bind player's vertex buffer'
-  // glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(GLfloat), player_verteces_, GL_DYNAMIC_DRAW);  // update buffer
-  // glDrawArrays(GL_LINES, 0, player_->vertex_count_);
-  // glDisableVertexAttribArray(0);
-  // glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void game::draw_enemy() {
@@ -93,16 +53,16 @@ void game::draw_player_bullet() {
 void game::process_input() {
   player_direction_ = 0;
   // move player to left
-  if (glfwGetKey(window_, GLFW_KEY_A)) {
+  if (window_->IsPressedKey(GLFW_KEY_A)) {
     --player_direction_;
   }
   // move player to right
-  if (glfwGetKey(window_, GLFW_KEY_D)) {
+  if (window_->IsPressedKey(GLFW_KEY_D)) {
     ++player_direction_;
   }
 
   // shoot player's bullet
-  if (glfwGetKey(window_, GLFW_KEY_K)) {
+  if (window_->IsPressedKey(GLFW_KEY_K)) {
     if (!player_bullet_->is_shoot()) {
       shoot_player_bullet();
     }
@@ -188,8 +148,9 @@ void game::generate_output() {
 
 void game::main_loop()
 {
-  while (!glfwWindowShouldClose(window_)) {
-    if (glfwGetKey(window_, GLFW_KEY_ESCAPE)) break;
+  // while (!glfwWindowShouldClose(window_)) {
+  while (!window_->ShouldClose()) {
+    if (window_->IsPressedKey(GLFW_KEY_ESCAPE)) break;
     // define background color
     glClearColor(0.2f, 0.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -198,7 +159,8 @@ void game::main_loop()
     process_input();
     update_status();
     generate_output();
-    glfwSwapBuffers(window_);
+
+    window_->SwapBuffers();
     glfwPollEvents();
   }
 }
