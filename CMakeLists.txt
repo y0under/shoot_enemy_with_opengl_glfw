@@ -20,7 +20,7 @@ include(FetchContent)
 FetchContent_Declare(
   y0_engine
   GIT_REPOSITORY https://github.com/y0under/y0_engine.git
-  GIT_TAG        main
+  GIT_TAG        develop
 )
 FetchContent_MakeAvailable(y0_engine)
 
