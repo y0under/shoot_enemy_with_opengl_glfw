@@ -52,15 +52,16 @@ find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
 
 target_link_libraries(shoot_enemy
-                      OpenGL::GL
-                      glfw
-                      GLEW
-                      shader_operator
+                      #OpenGL::GL
+                      #                      glfw
+                      #                    GLEW
                       game
                       circle
                       enemy
-                      object
                       player
                       player_bullet
+                      # ${OpenCV_LIBS}
+                      # ${Boost_LIBRARIES}
+                      # ${CMAKE_THREAD_LIBS_INIT}
                       y0_engine)
 
