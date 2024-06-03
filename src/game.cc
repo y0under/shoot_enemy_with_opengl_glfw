@@ -1,7 +1,7 @@
 #include "game.h"
 
 game::game()
-  : window_(new WindowGlfw(kwidth_, kheight_, "Shoot Enemy")) {
+  : window_(new y0_engine::WindowGlfw(kwidth_, kheight_, "Shoot Enemy")) {
   GLfloat player_verteces[] = { -0.05f, -0.95f,
                                 0.05f, -0.95f,
                                 0.05f, -0.9f,
